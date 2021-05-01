@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
     const socket = io('http://192.168.1.9:3000')
 
     socket.on('connect', () => {
-      socket.emit('msg', 'hello')
+      // socket.emit('msg', 'hello')
     })
     socket.on('disconnect', () => {
       console.log(socket.id)

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { Video } from 'expo-av'
+import ChatBox from '../components/ChatBox'
 
 const WatchScreen = (props) => {
   const { user, socket, videolink } = props.route.params
@@ -10,17 +11,30 @@ const WatchScreen = (props) => {
   const [hoststatus, sethoststatus] = useState({})
   const [videouri, setvideouri] = useState(videolink)
   const [streaming, setstreaming] = useState(false)
-  const video = React.useRef(null)
-
+  const video = useRef(null)
+  const [messages, setmessages] = useState([])
+  const [newmsg, setnewmsg] = useState()
   useFocusEffect(
     React.useCallback(() => {
       return () => {
         socket.emit('leaveRoom', room)
         socket.off('videoLink')
         socket.off('videoStatus')
+        socket.off('msg')
       }
     }, [props])
   )
+
+  useEffect(() => {
+    socket.on('msg', (msg) => {
+      console.log(msg)
+      setnewmsg(msg)
+    })
+  }, [])
+
+  useEffect(() => {
+    setmessages([...messages, newmsg])
+  }, [newmsg])
   useEffect(() => {
     !videolink
       ? socket.on('videoLink', (link) => {
@@ -52,6 +66,11 @@ const WatchScreen = (props) => {
   useEffect(() => {
     isHost ? socket.emit('videoStatus', { room: room, status: status }) : null
   }, [status])
+
+  const onSend = (msg) => {
+    // setmessages([...messages, msg])
+    socket.emit('msg', { room: room, msg: msg })
+  }
   return (
     <View style={styles.container}>
       <View style={styles.roomInfo}>
@@ -70,6 +89,9 @@ const WatchScreen = (props) => {
           onPlaybackStatusUpdate={(status) => setStatus(status)}
         />
       ) : null}
+      <View style={styles.chatBoxView}>
+        <ChatBox messages={messages} onSend={onSend} />
+      </View>
     </View>
   )
 }
@@ -93,5 +115,9 @@ const styles = StyleSheet.create({
   video: {
     width: '100%',
     height: 250,
+  },
+  chatBoxView: {
+    margin: 10,
+    height: '50%',
   },
 })

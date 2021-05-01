@@ -37,12 +37,6 @@ const JoinRoomModal = ({ visible, closeModal, onJoin }) => {
           <View style={styles.modalButtonContainer}>
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity
-                style={[styles.modalButton, styles.buttonClose]}
-                onPress={() => onJoin(roomcode)}
-              >
-                <Text style={styles.modalButtonText}>Join</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
                 style={[
                   styles.modalButton,
                   styles.buttonClose,
@@ -54,6 +48,12 @@ const JoinRoomModal = ({ visible, closeModal, onJoin }) => {
                 }}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.buttonClose]}
+                onPress={() => onJoin(roomcode)}
+              >
+                <Text style={styles.modalButtonText}>Join</Text>
               </TouchableOpacity>
             </View>
           </View>

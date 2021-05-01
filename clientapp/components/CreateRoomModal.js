@@ -37,12 +37,6 @@ const CreateRoomModal = ({ visible, closeModal, onCreate }) => {
           <View style={styles.modalButtonContainer}>
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity
-                style={[styles.modalButton, styles.buttonClose]}
-                onPress={() => onCreate(null, videolink)}
-              >
-                <Text style={styles.modalButtonText}>Create</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
                 style={[
                   styles.modalButton,
                   styles.buttonClose,
@@ -54,6 +48,12 @@ const CreateRoomModal = ({ visible, closeModal, onCreate }) => {
                 }}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.buttonClose]}
+                onPress={() => onCreate(null, videolink)}
+              >
+                <Text style={styles.modalButtonText}>Create</Text>
               </TouchableOpacity>
             </View>
           </View>

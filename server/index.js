@@ -41,8 +41,9 @@ io.on('connection', (socket) => {
     console.log(socket.id + ' disconnected')
   })
 
-  socket.on('msg', (msg) => {
-    console.log(msg)
+  socket.on('msg', ({ room, msg }) => {
+    room = parseInt(room)
+    io.to(room).emit('msg', msg)
   })
 
   socket.on('joinRoom', ({ id, room, isHost, videoLink }) => {
